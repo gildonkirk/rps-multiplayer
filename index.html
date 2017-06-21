@@ -9,7 +9,7 @@
 <form>
 	<label for="name-input">Name</label>
 	<input type="text" id="name-input">
-	<button value="Enter" id="Enter" type="submit">Enter</button>
+	<button value="enter" id="enter" type="submit">Enter</button>
 </form>
 
 <div class="player gameDisplay" id="player1">	
@@ -27,6 +27,20 @@
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
+
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDepx5PV4cOw_UeNzojNpTrrGStgzj25cA",
+    authDomain: "rps-multiplayer-89932.firebaseapp.com",
+    databaseURL: "https://rps-multiplayer-89932.firebaseio.com",
+    projectId: "rps-multiplayer-89932",
+    storageBucket: "",
+    messagingSenderId: "553271449222"
+  };
+  firebase.initializeApp(config);
+</script>
 <script src="app.js"></script>
 
 </body>
