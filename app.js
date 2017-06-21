@@ -35,12 +35,19 @@ database.ref().on('value', function(snapshot) {
 	
 	if (player1 === false) {
 		var username = snapshot.val().players.one.username;
-		$('#player1').text(username);
+		$('#name1').text(username);
 	} else {
 		var username = snapshot.val().players.two.username;
-		$('#player2').text(username);
+		$('#name2').text(username);
 	};
 	player1 = !player1;
+});
+
+$(document).on('click', '.rps', function(){
+	var choice = $(this).text();
+	$(this).removeClass('rps');
+	$('.rps').remove();
+	// $('#gameOutcome').text(choice);
 });
 
 // Need to make it so reload only deletes that users name, etc. right now it gets rid of everything
@@ -50,7 +57,3 @@ $(window).on('unload', function(){
 	player1Turn = true;
 });
 
-$(document).on('click', '.rps', function(){
-	var choice = $(this).text();
-	$('#gameOutcome').text(choice);
-})
