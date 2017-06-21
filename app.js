@@ -14,12 +14,14 @@ $('#enter').on("click", function() {
 			userWins: wins,
 			userLosses: losses
 		});
+		$('#player1').append('<p>Rock<br>Paper<br>Scissors</p>');
 	} else {
 		database.ref('players/two').set({
 			username: name,
 			userWins: wins,
 			userLosses: losses
 		});
+		$('#player2').append('<p>Rock<br>Paper<br>Scissors</p>');
 	}
 });
 	
