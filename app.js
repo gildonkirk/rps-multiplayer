@@ -1,6 +1,8 @@
 
 var database = firebase.database();
 var player1 = false;
+var player1Turn = true;
+
 $('#enter').on("click", function() {
 	event.preventDefault();
 	var name = $('#name-input').val();
@@ -14,14 +16,18 @@ $('#enter').on("click", function() {
 			userWins: wins,
 			userLosses: losses
 		});
-		$('#player1').append('<p>Rock<br>Paper<br>Scissors</p>');
+		$('#player1').append('<div class="rps">Rock</div>');
+		$('#player1').append('<div class="rps">Paper</div>');
+		$('#player1').append('<div class="rps">Scissors</div>');
 	} else {
 		database.ref('players/two').set({
 			username: name,
 			userWins: wins,
 			userLosses: losses
 		});
-		$('#player2').append('<p>Rock<br>Paper<br>Scissors</p>');
+		$('#player2').append('<div class="rps">Rock</div>');
+		$('#player2').append('<div class="rps">Paper</div>');
+		$('#player2').append('<div class="rps">Scissors</div>');
 	}
 });
 	
@@ -41,4 +47,10 @@ database.ref().on('value', function(snapshot) {
 $(window).on('unload', function(){
 	database.ref().remove();
 	player1 = false;
+	player1Turn = true;
 });
+
+$(document).on('click', '.rps', function(){
+	var choice = $(this).text();
+	$('#gameOutcome').text(choice);
+})
