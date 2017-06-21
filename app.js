@@ -31,8 +31,7 @@ $('#enter').on("click", function() {
 	}
 });
 	
-database.ref().on('value', function(snapshot) {
-	
+database.ref().on('value', function(snapshot) {	
 	if (player1 === false) {
 		var username = snapshot.val().players.one.username;
 		$('#name1').text(username);
@@ -43,11 +42,13 @@ database.ref().on('value', function(snapshot) {
 	player1 = !player1;
 });
 
+
+// Need to have this choice saved to firebase, not sure how to make it so the choice gets saved to the correct user
 $(document).on('click', '.rps', function(){
 	var choice = $(this).text();
 	$(this).removeClass('rps');
+	$(this).addClass('rpsChoice');
 	$('.rps').remove();
-	// $('#gameOutcome').text(choice);
 });
 
 // Need to make it so reload only deletes that users name, etc. right now it gets rid of everything
