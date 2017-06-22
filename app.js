@@ -2,10 +2,12 @@
 var database = firebase.database();
 var player1 = false;
 var player1turn = true;
+console.log(player1turn);
 var wins = 0;
 var losses = 0;
 
 $('#enter').on("click", function() {
+	console.log(player1turn);
 	event.preventDefault();
 	var name = $('#name-input').val();
 	var playerChoice = $('<p>').addClass('playerChoice');
@@ -17,7 +19,7 @@ $('#enter').on("click", function() {
 			userLosses: losses
 		});
 
-		// telling what player tou are not working
+		// telling what player you are not working
 		$('#gameInstruct').text('You are player 1')
 		$('#player1').append('<div class="rps rps1">Rock</div>');
 		$('#player1').append('<div class="rps rps1">Paper</div>');
@@ -31,7 +33,7 @@ $('#enter').on("click", function() {
 		database.ref().update({
 			oneTurn: player1turn
 		});	
-
+		console.log(player1turn);
 		// telling what player tou are not working
 		$('#gameInstruct').text('You are player 2')		
 		$('#player2').append('<div class="rps rps2">Rock</div>');
@@ -42,6 +44,7 @@ $('#enter').on("click", function() {
 
 //when firebase is updated, displays usernames on each users screen
 database.ref().on('value', function(snapshot) {	
+	console.log(snapshot.val());
 	if (player1 === false) {
 		var username = snapshot.val().players.one.username;
 		$('#name1').text(username);
@@ -54,15 +57,19 @@ database.ref().on('value', function(snapshot) {
 
 // sends choice to firebase and displays it only to local user, should toggle between turns
 database.ref('oneTurn').on('value', function(snapshot) {
+	console.log(player1turn);
 	if (snapshot.val().oneTurn === true) {
 		$(document).on('click', '.rps1', rps1choice)
+		console.log('player1test');
 	} else {
 		$(document).on('click', '.rps2', rps2choice)
+		console.log('player2test');
 	}
 });
  
 // not able to make 1st player choice right now
 function rps1choice() {
+	console.log('player1');
 	var rpsChoice = $(this).text();
 	$(this).removeClass('rps');
 	$(this).addClass('rpsChoice');
@@ -76,6 +83,7 @@ function rps1choice() {
 };
 
 function rps2choice() {
+	console.log('player2');
 	var rpsChoice = $(this).text();
 	$(this).removeClass('rps');
 	$(this).addClass('rpsChoice');
