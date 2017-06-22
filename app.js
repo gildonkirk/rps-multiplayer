@@ -9,7 +9,7 @@ $('#enter').on("click", function() {
 	var wins = 0;
 	var losses = 0;
 	var playerChoice = $('<p>').addClass('playerChoice');
-
+	$('form').remove();
 	if (player1 === false){
 		database.ref('players/one').set({
 			username: name,
