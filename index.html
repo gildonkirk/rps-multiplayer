@@ -2,52 +2,57 @@
 <html>
 <head>
 	<title>RPS</title>
+	<link rel="stylesheet" type="text/css" href="reset.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<header>Rock, Paper, Scissors</header>
-<div id="gameIntruct">
-	<form>
-		<label for="name-input">Name</label>
-		<input type="text" id="name-input">
-		<button value="enter" id="enter" type="submit">Enter</button>
-	</form>
-</div>
-
-<div class="player gameDisplay" id="player1">
-	<div id="name1" class="name">
-		Waiting for Player 1
+	<header>Rock, Paper, Scissors</header>
+	<div id="gameIntruct">
+		<form>
+			<label for="name-input">Name</label>
+			<input type="text" id="name-input">
+			<button value="enter" id="enter" type="submit">Enter</button>
+		</form>
 	</div>
-</div>
 
-<div class="gameDisplay" id="gameOutcome">
-</div>
-
-<div class="player gameDisplay" id="player2">
-	<div id="name2" class="name">
-		Waiting for Player 2
+	<div class="player gameDisplay" id="player1">
+		<div id="name1" class="name">
+			Waiting for Player 1
+		</div>
 	</div>
-</div>
 
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
+	<div class="gameDisplay" id="gameOutcome">
+	</div>
 
-<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDepx5PV4cOw_UeNzojNpTrrGStgzj25cA",
-    authDomain: "rps-multiplayer-89932.firebaseapp.com",
-    databaseURL: "https://rps-multiplayer-89932.firebaseio.com",
-    projectId: "rps-multiplayer-89932",
-    storageBucket: "",
-    messagingSenderId: "553271449222"
-  };
-  firebase.initializeApp(config);
-</script>
-<script src="app.js"></script>
+	<div class="player gameDisplay" id="player2">
+		<div id="name2" class="name">
+			Waiting for Player 2
+		</div>
+	</div>
+
+	<div class="turnContain">
+		<p class="turn"></p>
+	</div>
+
+	<script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "AIzaSyDepx5PV4cOw_UeNzojNpTrrGStgzj25cA",
+	    authDomain: "rps-multiplayer-89932.firebaseapp.com",
+	    databaseURL: "https://rps-multiplayer-89932.firebaseio.com",
+	    projectId: "rps-multiplayer-89932",
+	    storageBucket: "",
+	    messagingSenderId: "553271449222"
+	  };
+	  firebase.initializeApp(config);
+	</script>
+	<script src="app.js"></script>
 
 </body>
 </html>

@@ -1,7 +1,6 @@
 var database = firebase.database();
 var player1 = false;
 var turnCount = 1;
-console.log(turnCount);
 var wins = 0;
 var losses = 0;
 
@@ -56,11 +55,13 @@ database.ref('players').on('child_added', function(snapshot) {
 // sends choice to firebase and displays it only to local user, should toggle between turns
 database.ref('turn/turn').on('value', function(snapshot) {
 	if ((snapshot.val()) % 2 != 0) {
+		$('.turn').text('Your Turn Player 1');
 		$('#player1').css('border', '2px solid yellow');
 		$('#player2').css('border', '2px solid #222222');
 		$(document).on('click', '.rps1', rps1choice)
 		.off('click', '.rps2', rps2choice);
 	} else {
+		$('.turn').text('Your Turn Player 2');
 		$('#player2').css('border', '2px solid yellow');
 		$('#player1').css('border', '2px solid #222222');
 		$(document).on('click', '.rps2', rps2choice)
@@ -69,7 +70,6 @@ database.ref('turn/turn').on('value', function(snapshot) {
 });
 
 function rps1choice() {
-	console.log('player1');
 	var rpsChoice = $(this).text();
 	$(this).removeClass('rps');
 	$(this).addClass('rpsChoice');
@@ -84,7 +84,6 @@ function rps1choice() {
 };
 
 function rps2choice() {
-	console.log('player2');
 	var rpsChoice = $(this).text();
 	$(this).removeClass('rps');
 	$(this).addClass('rpsChoice');
@@ -98,7 +97,15 @@ function rps2choice() {
 	});
 };
 
+var player1Choice = database.ref('players/one/choice');
+var player2Choice = database.ref('players/two/choice');
+console.log(player1Choice);
+console.log(player2Choice);
 
+
+// player2Choice.on('value', function(snapshot) {
+// 	if(player1Choice)
+// });
 
 // Need to make it so reload only deletes that users name, wins, etc. right now it gets rid of both users
 $(window).on('unload', function(){
