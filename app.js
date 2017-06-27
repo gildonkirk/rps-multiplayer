@@ -1,22 +1,23 @@
 var database = firebase.database();
 var player1 = false;
 var turnCount = 1;
-var wins = 0;
-var losses = 0;
+var oneWins = 0;
+var oneLosses = 0;
+var twoWins = 0;
+var twoLosses = 0;
+
 
 $('#enter').on("click", function() {
-	console.log(turnCount);
 	event.preventDefault();
 	var name = $('#name-input').val();
-	var playerChoice = $('<p>').addClass('playerChoice');
 	if (player1 === false){
 		database.ref('players/one').set({
 			username: name,
-			userWins: wins,
-			userLosses: losses
+			userWins: oneWins,
+			userLosses: oneLosses,
+			choice: ''
 		});
-
-		$('header').after('<p>You are player 1</p>')
+		$('header').after('<p class="p1">You are player 1</p>')
 		$('#player1').append('<div class="rps rps1">Rock</div>');
 		$('#player1').append('<div class="rps rps1">Paper</div>');
 		$('#player1').append('<div class="rps rps1">Scissors</div>');
@@ -24,13 +25,14 @@ $('#enter').on("click", function() {
 	} else {
 		database.ref('players/two').set({
 			username: name,
-			userWins: wins,
-			userLosses: losses
+			userWins: twoWins,
+			userLosses: twoLosses,
+			choice:''
 		});
 		database.ref('turn').set({
 			turn: turnCount
 		});	
-		$('header').after('<p>You are player 2</p>')		
+		$('header').after('<p class="p2">You are player 2</p>')		
 		$('#player2').append('<div class="rps rps2">Rock</div>');
 		$('#player2').append('<div class="rps rps2">Paper</div>');
 		$('#player2').append('<div class="rps rps2">Scissors</div>');
@@ -52,7 +54,20 @@ database.ref('players').on('child_added', function(snapshot) {
 	};
 });
 
-// sends choice to firebase and displays it only to local user, should toggle between turns
+var p1Choice = '';
+var p2Choice = '';
+
+database.ref('players/one/choice').on('value', function(snapshot) {
+	var p1Choice = snapshot.val();
+	console.log(p1Choice);
+});
+
+database.ref('players/two/choice').on('value', function(snapshot) {
+	var p2Choice = snapshot.val();
+	console.log(p2Choice);
+});
+
+
 database.ref('turn/turn').on('value', function(snapshot) {
 	if ((snapshot.val()) % 2 != 0) {
 		$('.turn').text('Your Turn Player 1');
@@ -60,12 +75,14 @@ database.ref('turn/turn').on('value', function(snapshot) {
 		$('#player2').css('border', '2px solid #222222');
 		$(document).on('click', '.rps1', rps1choice)
 		.off('click', '.rps2', rps2choice);
+		console.log(twoLosses);
 	} else {
 		$('.turn').text('Your Turn Player 2');
 		$('#player2').css('border', '2px solid yellow');
 		$('#player1').css('border', '2px solid #222222');
 		$(document).on('click', '.rps2', rps2choice)
 		.off('click', '.rps1', rps1choice);
+		console.log(twoLosses);
 	}
 });
 
@@ -95,16 +112,55 @@ function rps2choice() {
 	database.ref('turn').set({
 		turn: turnCount
 	});
+	database.ref('players/one').update({
+		userWins: oneWins,
+		userLosses: oneLosses
+	});
+	database.ref('players/two').update({
+		userWins: twoWins,
+		userLosses: twoLosses
+	});
 };
 
-var player1Choice = database.ref('players/one/choice');
-var player2Choice = database.ref('players/two/choice');
-console.log(player1Choice);
-console.log(player2Choice);
+// because this value gets updated twice (once for player one's choice and once for player two's)
+// the counter is going up by two everytime
+database.ref('players').on('value', function(snapshot){
+	var data = snapshot.val();
+	if((data.one.choice === 'Rock') && (data.two.choice === 'Scissors')){
+		oneWins++;
+// losses going to two instead of one
+		twoLosses++;
+	} else if((data.one.choice === 'Paper') && (data.two.choice === 'Rock')){
+		oneWins++;
+		twoLosses++;
+	} else if((data.one.choice === 'Scissors') && (data.two.choice === 'Paper')){
+		oneWins++;
+		twoLosses++;
+	} else if((data.two.choice === 'Rock') && (data.one.choice === 'Scissors')){
+		twoWins++;
+		oneLosses++;
+	} else if((data.two.choice === 'Paper') && (data.one.choice === 'Rock')){
+		twoWins++;
+		oneLosses++;
+	} else if((data.two.choice === 'Scissors') && (data.one.choice === 'Paper')){
+		twoWins++;
+		oneLosses++;
+	};
 
 
-// player2Choice.on('value', function(snapshot) {
-// 	if(player1Choice)
+});
+
+// function getParent(snapshot) {
+//   // You can get the reference (A Firebase object) from a snapshot
+//   // using .ref().
+//   var ref = snapshot.ref();
+//   // Now simply find the parent and return the name.
+//   return ref.parent().name();
+// }
+
+// p1 Wins
+// database.ref('players/two/choice').on('value', function(snapshot) {
+
 // });
 
 // Need to make it so reload only deletes that users name, wins, etc. right now it gets rid of both users
@@ -112,5 +168,5 @@ $(window).on('unload', function(){
 	// how to reference specific user's info?
 	database.ref().remove();
 	player1 = false;
-	player1turn = true;
+	turnCount = 1;
 });
