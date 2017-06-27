@@ -124,11 +124,11 @@ function rps2choice() {
 
 // because this value gets updated twice (once for player one's choice and once for player two's)
 // the counter is going up by two everytime
+// how do i access parent elements with an object path?
 database.ref('players').on('value', function(snapshot){
 	var data = snapshot.val();
 	if((data.one.choice === 'Rock') && (data.two.choice === 'Scissors')){
 		oneWins++;
-// losses going to two instead of one
 		twoLosses++;
 	} else if((data.one.choice === 'Paper') && (data.two.choice === 'Rock')){
 		oneWins++;
@@ -169,4 +169,8 @@ $(window).on('unload', function(){
 	database.ref().remove();
 	player1 = false;
 	turnCount = 1;
+	oneWins = 0;
+	oneLosses = 0;
+	twoWins = 0;
+	twoLosses = 0;
 });
