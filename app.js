@@ -109,6 +109,9 @@ function rps2choice() {
 	if(gameOutcome = 'Player One Wins!') {
 		oneWins++;
 		twoLosses++;
+	} else if(gameOutcome = 'Player Two Wins!') {
+		oneLosses++;
+		twoWins++;
 	}
 	turnCount++;
 	console.log(turnCount);
@@ -138,18 +141,23 @@ database.ref('players').on('value', function(snapshot){
 	} else if((data.one.choice === 'Paper') && (data.two.choice === 'Rock')){
 		// oneWins++;
 		// twoLosses++;
+		$('#gameOutcome').append('<p class="winner">Player One Wins!</p>');
 	} else if((data.one.choice === 'Scissors') && (data.two.choice === 'Paper')){
 		// oneWins++;
 		// twoLosses++;
+		$('#gameOutcome').append('<p class="winner">Player One Wins!</p>');
 	} else if((data.two.choice === 'Rock') && (data.one.choice === 'Scissors')){
 		// twoWins++;
 		// oneLosses++;
+		$('#gameOutcome').append('<p class="winner">Player Two Wins!</p>');
 	} else if((data.two.choice === 'Paper') && (data.one.choice === 'Rock')){
 		// twoWins++;
 		// oneLosses++;
+		$('#gameOutcome').append('<p class="winner">Player Two Wins!</p>');
 	} else if((data.two.choice === 'Scissors') && (data.one.choice === 'Paper')){
 		// twoWins++;
 		// oneLosses++;
+		$('#gameOutcome').append('<p class="winner">Player Two Wins!</p>');
 	};
 });
 
