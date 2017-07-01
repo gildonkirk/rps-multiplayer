@@ -47,6 +47,7 @@ database.ref('players').on('child_added', function(snapshot) {
 	if (player1 === false) {
 		var username = snapshot.val().username;
 		$('#name1').text(username);
+		// the second person to log off is not being cleared from firebase due to the boolean below being set incorrectly
 		player1 = !player1;
 	} else {
 		var username = snapshot.val().username;
@@ -59,12 +60,10 @@ var p2Choice = '';
 
 database.ref('players/one/choice').on('value', function(snapshot) {
 	var p1Choice = snapshot.val();
-	console.log(p1Choice);
 });
 
 database.ref('players/two/choice').on('value', function(snapshot) {
 	var p2Choice = snapshot.val();
-	console.log(p2Choice);
 });
 
 
@@ -75,14 +74,12 @@ database.ref('turn/turn').on('value', function(snapshot) {
 		$('#player2').css('border', '2px solid #222222');
 		$(document).on('click', '.rps1', rps1choice)
 		.off('click', '.rps2', rps2choice);
-		console.log(twoLosses);
 	} else {
 		$('.turn').text('Your Turn Player 2');
 		$('#player2').css('border', '2px solid yellow');
 		$('#player1').css('border', '2px solid #222222');
 		$(document).on('click', '.rps2', rps2choice)
 		.off('click', '.rps1', rps1choice);
-		console.log(twoLosses);
 	}
 });
 
@@ -108,7 +105,13 @@ function rps2choice() {
 	database.ref('players/two').update({
 		choice: rpsChoice
 	});
+	var gameOutcome = $('#gameOutcome');
+	if(gameOutcome = 'Player One Wins!') {
+		oneWins++;
+		twoLosses++;
+	}
 	turnCount++;
+	console.log(turnCount);
 	database.ref('turn').set({
 		turn: turnCount
 	});
@@ -120,6 +123,7 @@ function rps2choice() {
 		userWins: twoWins,
 		userLosses: twoLosses
 	});
+
 };
 
 // because this value gets updated twice (once for player one's choice and once for player two's)
@@ -128,27 +132,27 @@ function rps2choice() {
 database.ref('players').on('value', function(snapshot){
 	var data = snapshot.val();
 	if((data.one.choice === 'Rock') && (data.two.choice === 'Scissors')){
-		oneWins++;
-		twoLosses++;
+		// oneWins++;
+		// twoLosses++;
+		$('#gameOutcome').append('<p class="winner">Player One Wins!</p>');
 	} else if((data.one.choice === 'Paper') && (data.two.choice === 'Rock')){
-		oneWins++;
-		twoLosses++;
+		// oneWins++;
+		// twoLosses++;
 	} else if((data.one.choice === 'Scissors') && (data.two.choice === 'Paper')){
-		oneWins++;
-		twoLosses++;
+		// oneWins++;
+		// twoLosses++;
 	} else if((data.two.choice === 'Rock') && (data.one.choice === 'Scissors')){
-		twoWins++;
-		oneLosses++;
+		// twoWins++;
+		// oneLosses++;
 	} else if((data.two.choice === 'Paper') && (data.one.choice === 'Rock')){
-		twoWins++;
-		oneLosses++;
+		// twoWins++;
+		// oneLosses++;
 	} else if((data.two.choice === 'Scissors') && (data.one.choice === 'Paper')){
-		twoWins++;
-		oneLosses++;
+		// twoWins++;
+		// oneLosses++;
 	};
-
-
 });
+
 
 // function getParent(snapshot) {
 //   // You can get the reference (A Firebase object) from a snapshot
@@ -165,6 +169,7 @@ database.ref('players').on('value', function(snapshot){
 
 // Need to make it so reload only deletes that users name, wins, etc. right now it gets rid of both users
 $(window).on('unload', function(){
+	var player = player1 ? 'one' : 'two';
 	// how to reference specific user's info?
 	database.ref().remove();
 	player1 = false;
@@ -173,4 +178,5 @@ $(window).on('unload', function(){
 	oneLosses = 0;
 	twoWins = 0;
 	twoLosses = 0;
+	// `players/${player}`
 });
